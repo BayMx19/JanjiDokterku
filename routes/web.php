@@ -20,28 +20,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::prefix('master')->group(function () {
-        Route::inertia('/users', 'User/Index');
-        Route::inertia('/users/create', 'User/Create');
-        Route::inertia('/users/{id}/edit', 'User/Edit');
+        Route::inertia('/users', 'Users/Index')->name('users');
+    Route::inertia('/users/create', 'Users/Create')->name('users.create');
+    Route::inertia('/users/{id}/edit', 'Users/Edit')->name('users.edit');
 
-        Route::inertia('/pasien', 'Pasien/Index');
-        Route::inertia('/pasien/create', 'Pasien/Create');
-        Route::inertia('/pasien/{id}/edit', 'Pasien/Edit');
+    Route::inertia('/pasien', 'Pasien/Index')->name('pasien');
+    Route::inertia('/pasien/create', 'Pasien/Create')->name('pasien.create');
+    Route::inertia('/pasien/{id}/edit', 'Pasien/Edit')->name('pasien.edit');
 
-        Route::inertia('/dokter', 'Dokter/Index');
-        Route::inertia('/dokter/create', 'Dokter/Create');
-        Route::inertia('/dokter/{id}/edit', 'Dokter/Edit');
+    Route::inertia('/dokter', 'Dokter/Index')->name('dokter');
+    Route::inertia('/dokter/create', 'Dokter/Create')->name('dokter.create');
+    Route::inertia('/dokter/{id}/edit', 'Dokter/Edit')->name('dokter.edit');
 
-        Route::inertia('/roles', 'Role/Index');
-        Route::inertia('/roles/create', 'Role/Create');
-        Route::inertia('/roles/{id}/edit', 'Role/Edit');
+    Route::inertia('/roles', 'Roles/Index')->name('roles');
+    Route::inertia('/roles/create', 'Roles/Create')->name('roles.create');
+    Route::inertia('/roles/{id}/edit', 'Roles/Edit')->name('roles.edit');
     });
 
-    Route::prefix('appointment')->group(function () {
-        Route::inertia('/', 'Appointment/Index');
-        Route::inertia('/create', 'Appointment/Create');
-        Route::inertia('/{id}/edit', 'Appointment/Edit');
-    });
+    Route::inertia('/appointment', 'Appointments/Index')->name('appointment');
+    Route::inertia('/appointment/create', 'Appointments/Create')->name('appointment.create');
+    Route::inertia('/appointment/{id}/edit', 'Appointments/Edit')->name('appointment.edit');
 });
 
 require __DIR__.'/auth.php';
