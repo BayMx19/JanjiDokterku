@@ -14,14 +14,34 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('master')->group(function () {
+        Route::inertia('/users', 'User/Index');
+        Route::inertia('/users/create', 'User/Create');
+        Route::inertia('/users/{id}/edit', 'User/Edit');
+
+        Route::inertia('/pasien', 'Pasien/Index');
+        Route::inertia('/pasien/create', 'Pasien/Create');
+        Route::inertia('/pasien/{id}/edit', 'Pasien/Edit');
+
+        Route::inertia('/dokter', 'Dokter/Index');
+        Route::inertia('/dokter/create', 'Dokter/Create');
+        Route::inertia('/dokter/{id}/edit', 'Dokter/Edit');
+
+        Route::inertia('/roles', 'Role/Index');
+        Route::inertia('/roles/create', 'Role/Create');
+        Route::inertia('/roles/{id}/edit', 'Role/Edit');
+    });
+
+    Route::prefix('appointment')->group(function () {
+        Route::inertia('/', 'Appointment/Index');
+        Route::inertia('/create', 'Appointment/Create');
+        Route::inertia('/{id}/edit', 'Appointment/Edit');
+    });
 });
 
 require __DIR__.'/auth.php';
