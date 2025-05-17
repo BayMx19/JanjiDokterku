@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class PasienModel extends Model
 {
     use HasUuids;
+    protected $table = 'pasien';
+
     protected $keyType = 'string';
     public $incrementing = false;
 }

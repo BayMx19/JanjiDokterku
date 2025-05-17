@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class DokterModel extends Model
 {
     use HasUuids;
+    protected $table = 'dokter';
     protected $keyType = 'string';
     public $incrementing = false;
 }

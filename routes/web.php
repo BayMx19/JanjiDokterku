@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,9 +21,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::prefix('master')->group(function () {
-        Route::inertia('/users', 'Users/Index')->name('users');
-    Route::inertia('/users/create', 'Users/Create')->name('users.create');
-    Route::inertia('/users/{id}/edit', 'Users/Edit')->name('users.edit');
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('/master/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/master/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
 
     Route::inertia('/pasien', 'Pasien/Index')->name('pasien');
     Route::inertia('/pasien/create', 'Pasien/Create')->name('pasien.create');
