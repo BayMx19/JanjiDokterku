@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DokterController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -30,13 +32,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
-    Route::inertia('/pasien', 'Pasien/Index')->name('pasien');
-    Route::inertia('/pasien/create', 'Pasien/Create')->name('pasien.create');
-    Route::inertia('/pasien/{id}/edit', 'Pasien/Edit')->name('pasien.edit');
+    Route::get('/pasien', [PasienController::class, 'index'])->name('pasien');
+    Route::get('/master/pasien/create', [PasienController::class, 'create'])->name('pasien.create');
+    Route::post('/master/pasien', [PasienController::class, 'store'])->name('pasien.store');
+    Route::get('/pasien/{id}/edit', [PasienController::class, 'edit'])->name('pasien.edit');
+    Route::put('/pasien/{id}', [PasienController::class, 'update'])->name('pasien.update');
+    Route::delete('/pasien/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
 
-    Route::inertia('/dokter', 'Dokter/Index')->name('dokter');
-    Route::inertia('/dokter/create', 'Dokter/Create')->name('dokter.create');
-    Route::inertia('/dokter/{id}/edit', 'Dokter/Edit')->name('dokter.edit');
+
+    Route::get('/dokter', [DokterController::class, 'index'])->name('dokter');
+    Route::get('/master/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
+    Route::post('/master/dokter', [DokterController::class, 'store'])->name('dokter.store');
+    Route::get('/dokter/{id}/edit', [DokterController::class, 'edit'])->name('dokter.edit');
+    Route::put('/dokter/{id}', [DokterController::class, 'update'])->name('dokter.update');
+    Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
 
     Route::inertia('/roles', 'Roles/Index')->name('roles');
     Route::inertia('/roles/create', 'Roles/Create')->name('roles.create');

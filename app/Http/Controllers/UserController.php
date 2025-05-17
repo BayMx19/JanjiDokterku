@@ -21,6 +21,8 @@ class UserController extends Controller
 
     public function create()
     {
+
+
         return Inertia::render('Users/Create', [
             'roles' => RolesModel::select('id', 'name')->get()
         ]);
@@ -48,9 +50,11 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        $audits = $user->audits()->with('user')->latest()->get();
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
+            'audits' => $audits,
             'roles' => RolesModel::select('id', 'name')->get(),
         ]);
     }

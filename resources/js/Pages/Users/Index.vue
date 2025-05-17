@@ -15,10 +15,10 @@
                         <!-- Tombol di kanan -->
                         <div class="mb-4 flex justify-end">
                             <Link
-                                href="/master/users/create"
+                                :href="route('users.create')"
                                 class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                             >
-                                <i class="fas fa-plus mr-2"></i>Tambah User
+                                <i class="fas fa-plus mr-2"></i>Tambah Users
                             </Link>
                         </div>
 

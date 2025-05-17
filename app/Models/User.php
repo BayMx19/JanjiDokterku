@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-class User extends Authenticatable
+use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use OwenIt\Auditing\Auditable;
+class User extends Authenticatable implements AuditableContract
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasUuids, SoftDeletes;
+    use HasFactory, Notifiable, HasUuids, SoftDeletes, Auditable;
     protected $keyType = 'string';
     public $incrementing = false;
     /**
@@ -53,5 +54,13 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(RolesModel::class);
+    }
+    public function pasien()
+    {
+        return $this->hasMany(PasienModel::class);
+    }
+    public function dokter()
+    {
+        return $this->hasOne(DokterModel::class);
     }
 }

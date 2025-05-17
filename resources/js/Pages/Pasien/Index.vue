@@ -1,8 +1,3 @@
-<script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head } from "@inertiajs/vue3";
-</script>
-
 <template>
     <Head title="Master Pasien" />
 
@@ -16,9 +11,166 @@ import { Head } from "@inertiajs/vue3";
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">Ini Master Pasien</div>
+                    <div class="p-6 text-gray-900">
+                        <!-- Tombol di kanan -->
+                        <div class="mb-4 flex justify-end">
+                            <Link
+                                :href="route('pasien.create')"
+                                class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                            >
+                                <i class="fas fa-plus mr-2"></i>Tambah Pasien
+                            </Link>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table
+                                class="w-full table-auto border-collapse border border-gray-200"
+                            >
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Nama
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Jenis Kelamin
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Tanggal Lahir
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Alamat
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Aksi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="pasien in props.pasien.data"
+                                        :key="pasien.id"
+                                        class="even:bg-gray-50"
+                                    >
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ pasien.user?.name ?? "-" }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ pasien.jenis_kelamin }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{
+                                                formatTanggal(
+                                                    pasien.tanggal_lahir
+                                                )
+                                            }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ pasien.alamat?.jalan ?? "-" }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            <div
+                                                class="flex items-center space-x-2"
+                                            >
+                                                <Link
+                                                    :href="
+                                                        route(
+                                                            'pasien.edit',
+                                                            pasien.id
+                                                        )
+                                                    "
+                                                    class="text-blue-600 hover:text-blue-800"
+                                                    title="Edit"
+                                                >
+                                                    <i class="fas fa-edit"></i>
+                                                </Link>
+                                                <button
+                                                    @click="
+                                                        destroyPasien(pasien.id)
+                                                    "
+                                                    class="text-red-600 hover:text-red-800"
+                                                >
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-4 flex justify-center space-x-4">
+                            <Link
+                                v-if="props.pasien.prev_page_url"
+                                :href="props.pasien.prev_page_url"
+                                class="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                            >
+                                Sebelumnya
+                            </Link>
+                            <span class="px-3 py-1">{{
+                                props.pasien.current_page
+                            }}</span>
+                            <Link
+                                v-if="props.pasien.next_page_url"
+                                :href="props.pasien.next_page_url"
+                                class="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                            >
+                                Berikutnya
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
+
+<script setup>
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head, Link, router } from "@inertiajs/vue3";
+
+const props = defineProps({
+    pasien: Object,
+});
+
+function destroyPasien(id) {
+    if (confirm("Yakin ingin menghapus data pasien ini?")) {
+        router.delete(route("pasien.destroy", id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log("Pasien berhasil dihapus.");
+            },
+            onError: () => {
+                console.error("Gagal menghapus pasien.");
+            },
+        });
+    }
+}
+
+function formatTanggal(tgl) {
+    const date = new Date(tgl);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+</script>

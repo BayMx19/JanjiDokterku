@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('dokter', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id')->unique();
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('NIK')->unique();
+            $table->string('jenis_kelamin');
+            $table->string('no_hp');
+            $table->json('alamat');
             $table->string('spesialisasi');
+            $table->json('jadwal')->nullable();
             $table->boolean('aktif')->default(true);
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

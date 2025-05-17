@@ -91,6 +91,75 @@
                 </div>
             </div>
         </div>
+        <div class="py-12">
+            <div class="bg-white p-6 shadow-md sm:rounded-lg mt-3">
+                <div>
+                    <!-- Form Edit User disini -->
+
+                    <h3 class="mb-2"><b>Audit Trail</b></h3>
+                    <table
+                        class="table-auto border-collapse border border-gray-300 w-full"
+                    >
+                        <thead>
+                            <tr>
+                                <th class="border border-gray-300 px-2 py-1">
+                                    Tanggal
+                                </th>
+                                <th class="border border-gray-300 px-2 py-1">
+                                    Aksi
+                                </th>
+                                <!-- <th class="border border-gray-300 px-2 py-1">
+                                    Detail Perubahan
+                                </th> -->
+                                <th class="border border-gray-300 px-2 py-1">
+                                    Oleh User
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="audit in audits" :key="audit.id">
+                                <td class="border border-gray-300 px-2 py-1">
+                                    {{
+                                        new Date(
+                                            audit.created_at
+                                        ).toLocaleString()
+                                    }}
+                                </td>
+                                <td class="border border-gray-300 px-2 py-1">
+                                    {{ audit.event }}
+                                </td>
+                                <!-- <td
+                                    class="border border-gray-300 px-2 py-1 whitespace-normal"
+                                >
+                                    <div
+                                        v-for="(
+                                            newValue, key
+                                        ) in audit.new_values"
+                                        :key="key"
+                                        class="mb-1"
+                                    >
+                                        <strong>{{ key }}:</strong><br />
+                                        <span
+                                            class="line-through text-red-600"
+                                            >{{
+                                                audit.old_values[key] ?? "-"
+                                            }}</span
+                                        >
+                                        <br />
+                                        <span class="text-green-600">{{
+                                            newValue
+                                        }}</span>
+                                    </div>
+                                </td> -->
+                                <td class="border border-gray-300 px-2 py-1">
+                                    {{ audit.user?.name ?? "System" }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </AuthenticatedLayout>
 </template>
 
@@ -101,6 +170,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 const props = defineProps({
     user: Object,
     roles: Array,
+    audits: Array,
 });
 
 const form = useForm({

@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('pasien', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->date('tanggal_lahir');
+            $table->string('NIK')->unique();
+            $table->string('jenis_kelamin');
+            $table->string('no_hp')->nullable();
             $table->json('alamat')->nullable();
             $table->timestamps();
             $table->softDeletes();
