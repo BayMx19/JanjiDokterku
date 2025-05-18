@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
@@ -65,9 +66,14 @@ Route::get('/roles/{id}/edit', [RolesController::class, 'edit'])->name('roles.ed
 Route::put('/roles/{id}', [RolesController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');    });
 
-    Route::inertia('/appointment', 'Appointments/Index')->name('appointment');
-    Route::inertia('/appointment/create', 'Appointments/Create')->name('appointment.create');
-    Route::inertia('/appointment/{id}/edit', 'Appointments/Edit')->name('appointment.edit');
-});
+Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments');
+
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+Route::get('/appointments/{id}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
+Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+Route::get('/appointments/{id}/detail', [AppointmentController::class, 'detail'])->name('appointments.detail');
+Route::post('/appointments/{id}/rekam-medis', [AppointmentController::class, 'storeRekamMedis'])->name('appointments.storeRekamMedis');
+Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');});
 
 require __DIR__.'/auth.php';

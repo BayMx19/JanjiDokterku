@@ -28,6 +28,7 @@ class RekamMedisModel extends Model implements AuditableContract
         'resep',
         'catatan',
         'pencatat',
+        'appointment_id'
     ];
 
     protected $casts = [

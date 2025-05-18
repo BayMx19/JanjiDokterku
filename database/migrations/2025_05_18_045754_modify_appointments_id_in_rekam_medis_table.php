@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('rekam_medis', function (Blueprint $table) {
-            $table->string('pencatat');
+            $table->uuid('appointment_id');
+            $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');
         });
     }
 

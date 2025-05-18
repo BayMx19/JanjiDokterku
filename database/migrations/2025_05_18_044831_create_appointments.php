@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointment', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('pasien_id');
             $table->uuid('dokter_id');
-            $table->datetime('jadwal');
-            $table->json('keluhan')->nullable();
-            $table->boolean('status')->default(false); // sudah datang?
-            $table->string('file_attachment')->nullable(); // path file PDF
+            $table->enum('status', ['belum visit', 'sudah visit'])->default('belum visit');
+            $table->text('catatan')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('pasien_id')->references('id')->on('pasien')->onDelete('cascade');
             $table->foreign('dokter_id')->references('id')->on('dokter')->onDelete('cascade');
-        });
+            $table->json('jadwal')->nullable();
+});
     }
 
     /**
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appoinment');
+        Schema::dropIfExists('appointments');
     }
 };

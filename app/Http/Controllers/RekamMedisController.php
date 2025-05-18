@@ -51,7 +51,7 @@ class RekamMedisController extends Controller
             'tindakan'  => $request->tindakan,
             'resep'     => $request->resep,
             'catatan'   => $request->catatan,
-            'pencatat'   => $request->catatan,
+            'pencatat'   => $request->pencatat,
         ]);
 
         return redirect()->route('rm')->with('success', 'Rekam medis berhasil ditambahkan.');

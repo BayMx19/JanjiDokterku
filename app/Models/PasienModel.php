@@ -42,6 +42,11 @@ class PasienModel extends Model implements AuditableContract
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    //     public function appointments()
+    // {
+    //     return $this->hasMany(AppointmentsModel::class, 'pasien_id');
+    // }
+
 }

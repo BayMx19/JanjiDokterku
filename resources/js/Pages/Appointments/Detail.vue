@@ -1,8 +1,10 @@
 <template>
+    <Head title="Detail Appointment" />
+
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Edit Appointment
+                Detail Appointment
             </h2>
         </template>
 
@@ -20,6 +22,7 @@
                             <select
                                 v-model="form.pasien_id"
                                 class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                disabled
                             >
                                 <option value="">Pilih Pasien</option>
                                 <option
@@ -42,6 +45,7 @@
                             <select
                                 v-model="form.dokter_id"
                                 class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                disabled
                             >
                                 <option value="">Pilih Dokter</option>
                                 <option
@@ -73,16 +77,19 @@
                                     type="date"
                                     v-model="tanggal"
                                     class="rounded border-gray-300 shadow-sm"
+                                    disabled
                                 />
                                 <input
                                     type="time"
                                     v-model="jamAwal"
                                     class="rounded border-gray-300 shadow-sm"
+                                    disabled
                                 />
                                 <input
                                     type="time"
                                     v-model="jamAkhir"
                                     class="rounded border-gray-300 shadow-sm"
+                                    disabled
                                 />
                             </div>
                             <div
@@ -98,7 +105,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-700"
                             >
-                                Status
+                                Ubah Status
                             </label>
                             <select
                                 v-model="form.status"
@@ -120,6 +127,7 @@
                                 v-model="form.catatan"
                                 rows="3"
                                 class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                disabled
                             ></textarea>
                         </div>
 
@@ -138,52 +146,124 @@
                             </button>
                         </div>
                     </form>
+                    <div class="mt-8">
+                        <button
+                            @click="openModal"
+                            class="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                        >
+                            Tambah Rekam Medis
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="py-12">
-            <div class="bg-white p-6 shadow-md sm:rounded-lg mt-3">
-                <h3 class="mb-2 font-bold text-lg">Audit Trail</h3>
-                <table
-                    class="table-auto border-collapse border border-gray-300 w-full"
+        <!-- Modal Tambah Rekam Medis -->
+        <teleport to="body">
+            <div
+                v-if="isModalOpen"
+                class="fixed inset-0 bg-black flex items-center justify-center bg-opacity-50 z-50"
+            >
+                <div
+                    class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg"
+                    ref="modalContent"
+                    @click.stop
                 >
-                    <thead>
-                        <tr>
-                            <th class="border border-gray-300 px-2 py-1">
-                                Tanggal
-                            </th>
-                            <th class="border border-gray-300 px-2 py-1">
-                                Aksi
-                            </th>
-                            <th class="border border-gray-300 px-2 py-1">
-                                Oleh User
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="audit in audits" :key="audit.id">
-                            <td class="border border-gray-300 px-2 py-1">
-                                {{
-                                    new Date(audit.created_at).toLocaleString()
-                                }}
-                            </td>
-                            <td class="border border-gray-300 px-2 py-1">
-                                {{ audit.event }}
-                            </td>
-                            <td class="border border-gray-300 px-2 py-1">
-                                {{ audit.user?.name ?? "System" }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <h3 class="mb-4 text-lg font-semibold">
+                        Tambah Rekam Medis
+                    </h3>
+                    <form @submit.prevent="submitRekamMedis">
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Tanggal</label
+                            >
+                            <input
+                                type="date"
+                                v-model="rekamMedis.tanggal"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Diagnosa</label
+                            >
+                            <textarea
+                                v-model="rekamMedis.diagnosa"
+                                rows="2"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Tindakan</label
+                            >
+                            <textarea
+                                v-model="rekamMedis.tindakan"
+                                rows="2"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Resep</label
+                            >
+                            <textarea
+                                v-model="rekamMedis.resep"
+                                rows="2"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Catatan</label
+                            >
+                            <textarea
+                                v-model="rekamMedis.catatan"
+                                rows="2"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Pencatat</label
+                            >
+                            <input
+                                type="text"
+                                v-model="rekamMedis.pencatat"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                required
+                            />
+                        </div>
+                        <div class="flex justify-end gap-2 mt-4">
+                            <button
+                                type="button"
+                                @click="closeModal()"
+                                class="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-100"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                type="submit"
+                                class="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                            >
+                                Simpan Rekam Medis
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </teleport>
     </AuthenticatedLayout>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { Link, useForm } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
@@ -199,7 +279,13 @@ const tanggal = ref("");
 const jamAwal = ref("");
 const jamAkhir = ref("");
 const jadwalError = ref(null);
-
+const isModalOpen = ref(false);
+function openModal() {
+    isModalOpen.value = true;
+}
+function closeModal() {
+    isModalOpen.value = false;
+}
 const form = useForm({
     pasien_id: props.appointment.pasien_id ?? "",
     dokter_id: props.appointment.dokter_id ?? "",
@@ -210,6 +296,15 @@ const form = useForm({
         : JSON.stringify({ tanggal: "", jam_awal: "", jam_akhir: "" }),
     status: props.appointment.status ?? "",
     catatan: props.appointment.catatan ?? "",
+});
+const rekamMedis = useForm({
+    appointment_id: props.appointment.id,
+    tanggal: "",
+    diagnosa: "",
+    tindakan: "",
+    resep: "",
+    catatan: "",
+    pencatat: "",
 });
 
 onMounted(() => {
@@ -224,24 +319,6 @@ onMounted(() => {
         jamAkhir.value = "";
     }
 });
-
-// watch(
-//     () => form.jadwal,
-//     (newVal) => {
-//         if (newVal) {
-//             try {
-//                 const jadwalObj = JSON.parse(newVal);
-//                 tanggal.value = jadwalObj.tanggal || "";
-//                 jamAwal.value = jadwalObj.jam_awal || "";
-//                 jamAkhir.value = jadwalObj.jam_akhir || "";
-//             } catch {
-//                 tanggal.value = "";
-//                 jamAwal.value = "";
-//                 jamAkhir.value = "";
-//             }
-//         }
-//     }
-// );
 
 function submit() {
     jadwalError.value = null;
@@ -267,5 +344,20 @@ function submit() {
     }
 
     form.put(route("appointments.update", props.appointment.id));
+}
+function submitRekamMedis() {
+    rekamMedis.post(
+        route("appointments.storeRekamMedis", props.appointment.id),
+        {
+            onSuccess: () => {
+                alert("Rekam medis berhasil disimpan!");
+                closeModal();
+                rekamMedis.reset();
+            },
+            onError: () => {
+                alert("Terjadi kesalahan saat menyimpan rekam medis.");
+            },
+        }
+    );
 }
 </script>

@@ -394,7 +394,6 @@ const props = defineProps({
     audits: Array,
 });
 
-// Ubah props.dokter.alamat dari JSON string/array jadi object jika perlu
 const alamatDefault = props.dokter.alamat ?? {
     jalan: "",
     kelurahan: "",
@@ -404,7 +403,6 @@ const alamatDefault = props.dokter.alamat ?? {
     kode_pos: "",
 };
 
-// Pastikan alamat adalah object (bukan array), sesuaikan dengan data backend
 const alamatObj =
     typeof alamatDefault === "string"
         ? JSON.parse(alamatDefault)
@@ -421,7 +419,7 @@ const form = useForm({
             : [{ hari: "", jam_mulai: "", jam_akhir: "" }],
     alamat: alamatObj,
     no_hp: props.dokter.no_hp || "",
-    aktif: props.dokter.aktif ?? "", // bisa true/false/null
+    aktif: props.dokter.aktif ?? "",
 });
 
 function tambahJadwal() {
@@ -433,7 +431,6 @@ function hapusJadwal(index) {
 }
 
 function submit() {
-    // Gunakan method put dan kirim ke route update dengan id dokter
     form.put(route("dokter.update", props.dokter.id));
 }
 </script>
