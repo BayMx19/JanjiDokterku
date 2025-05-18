@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RekamMedisController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +44,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/pasien/{id}', [PasienController::class, 'update'])->name('pasien.update');
     Route::delete('/pasien/{id}', [PasienController::class, 'destroy'])->name('pasien.destroy');
 
+    Route::get('/rm', [RekamMedisController::class, 'index'])->name('rm');
+    Route::get('/master/rm/create', [RekamMedisController::class, 'create'])->name('rm.create');
+    Route::post('/master/rm', [RekamMedisController::class, 'store'])->name('rm.store');
+    Route::get('/rm/{id}/edit', [RekamMedisController::class, 'edit'])->name('rm.edit');
+    Route::put('/rm/{id}', [RekamMedisController::class, 'update'])->name('rm.update');
+    Route::delete('/rm/{id}', [RekamMedisController::class, 'destroy'])->name('rm.destroy');
 
     Route::get('/dokter', [DokterController::class, 'index'])->name('dokter');
     Route::get('/master/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
@@ -50,10 +58,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/dokter/{id}', [DokterController::class, 'update'])->name('dokter.update');
     Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
 
-    Route::inertia('/roles', 'Roles/Index')->name('roles');
-    Route::inertia('/roles/create', 'Roles/Create')->name('roles.create');
-    Route::inertia('/roles/{id}/edit', 'Roles/Edit')->name('roles.edit');
-    });
+Route::get('/roles', [RolesController::class, 'index'])->name('roles');
+Route::get('/master/roles/create', [RolesController::class, 'create'])->name('roles.create');
+Route::post('/master/roles', [RolesController::class, 'store'])->name('roles.store');
+Route::get('/roles/{id}/edit', [RolesController::class, 'edit'])->name('roles.edit');
+Route::put('/roles/{id}', [RolesController::class, 'update'])->name('roles.update');
+Route::delete('/roles/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');    });
 
     Route::inertia('/appointment', 'Appointments/Index')->name('appointment');
     Route::inertia('/appointment/create', 'Appointments/Create')->name('appointment.create');

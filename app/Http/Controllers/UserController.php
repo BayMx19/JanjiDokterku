@@ -80,7 +80,8 @@ class UserController extends Controller
             return back()->with('error', 'Anda tidak dapat menghapus diri sendiri.');
         }
         $user->delete();
- return redirect()->back()->with('success', 'User berhasil dihapus.');    }
+        return redirect()->back()->with('success', 'User berhasil dihapus.');
+    }
 
 
 }

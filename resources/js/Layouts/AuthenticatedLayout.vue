@@ -70,6 +70,16 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
+                                    :href="route('rm')"
+                                    :active="route().current('rm')"
+                                >
+                                    Rekam Medis
+                                </NavLink>
+                            </div>
+                            <div
+                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
+                            >
+                                <NavLink
                                     :href="route('roles')"
                                     :active="route().current('roles')"
                                 >

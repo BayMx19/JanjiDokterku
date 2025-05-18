@@ -1,10 +1,10 @@
 <template>
-    <Head title="Data Roles" />
+    <Head title="Data Rekam Medis" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Data Roles
+                Data Rekam Medis
             </h2>
         </template>
 
@@ -15,10 +15,11 @@
                         <!-- Tombol di kanan -->
                         <div class="mb-4 flex justify-end">
                             <Link
-                                :href="route('roles.create')"
+                                :href="route('rm.create')"
                                 class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                             >
-                                <i class="fas fa-plus mr-2"></i>Tambah Role
+                                <i class="fas fa-plus mr-2"></i>Tambah Rekam
+                                Medis
                             </Link>
                         </div>
 
@@ -31,9 +32,23 @@
                                         <th
                                             class="border border-gray-300 px-4 py-2 text-left"
                                         >
-                                            Nama Role
+                                            Nama Pasien
                                         </th>
-
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Tanggal
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Diagnosa
+                                        </th>
+                                        <th
+                                            class="border border-gray-300 px-4 py-2 text-left"
+                                        >
+                                            Tindakan
+                                        </th>
                                         <th
                                             class="border border-gray-300 px-4 py-2 text-left"
                                         >
@@ -43,16 +58,30 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        v-for="role in roles"
-                                        :key="role.id"
+                                        v-for="data in props.RM"
+                                        :key="data.id"
                                         class="even:bg-gray-50"
                                     >
                                         <td
                                             class="border border-gray-300 px-4 py-2"
                                         >
-                                            {{ role.name }}
+                                            {{ data.user.name }}
                                         </td>
-
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ formatTanggal(data.tanggal) }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ data.diagnosa }}
+                                        </td>
+                                        <td
+                                            class="border border-gray-300 px-4 py-2"
+                                        >
+                                            {{ data.tindakan }}
+                                        </td>
                                         <td
                                             class="border border-gray-300 px-4 py-2"
                                         >
@@ -62,8 +91,8 @@
                                                 <Link
                                                     :href="
                                                         route(
-                                                            'roles.edit',
-                                                            role.id
+                                                            'rm.edit',
+                                                            data.id
                                                         )
                                                     "
                                                     class="text-blue-600 hover:text-blue-800"
@@ -72,7 +101,7 @@
                                                     <i class="fas fa-edit"></i>
                                                 </Link>
                                                 <button
-                                                    @click="destroy(role.id)"
+                                                    @click="destroy(data.id)"
                                                     class="text-red-600 hover:text-red-800"
                                                     title="Hapus"
                                                 >
@@ -84,7 +113,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- Pagination bisa ditambahkan nanti jika data sudah paginated -->
+                        <!-- Belum pakai pagination karena datanya belum paginated -->
                     </div>
                 </div>
             </div>
@@ -97,20 +126,27 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, router } from "@inertiajs/vue3";
 
 const props = defineProps({
-    roles: Array,
+    RM: Array,
 });
 
 function destroy(id) {
-    if (confirm("Yakin ingin menghapus role ini?")) {
-        router.delete(route("roles.destroy", id), {
+    if (confirm("Yakin ingin menghapus rekam medis ini?")) {
+        router.delete(route("rm.destroy", id), {
             preserveScroll: true,
             onSuccess: () => {
-                console.log("Role berhasil dihapus.");
+                console.log("Data berhasil dihapus.");
             },
             onError: () => {
-                console.error("Gagal menghapus role.");
+                console.error("Gagal menghapus data.");
             },
         });
     }
+}
+function formatTanggal(tgl) {
+    const date = new Date(tgl);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
 }
 </script>

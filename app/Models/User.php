@@ -63,4 +63,8 @@ class User extends Authenticatable implements AuditableContract
     {
         return $this->hasOne(DokterModel::class);
     }
+    public function rekamMedis()
+    {
+        return $this->hasMany(RekamMedisModel::class, 'user_id');
+    }
 }
