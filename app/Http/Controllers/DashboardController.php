@@ -9,6 +9,7 @@ use App\Models\DokterModel;
 use App\Models\Jadwal;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use OwenIt\Auditing\Models\Audit;
 
@@ -16,6 +17,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // $user = Auth::user()->role->name;
+        // dd($user);
         return Inertia::render('Dashboard', [
             'totalUsers' => User::count(),
             'totalPasien' => PasienModel::count(),

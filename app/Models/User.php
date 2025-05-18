@@ -53,7 +53,7 @@ class User extends Authenticatable implements AuditableContract
 
     public function role()
     {
-        return $this->belongsTo(RolesModel::class);
+        return $this->belongsTo(RolesModel::class, 'role_id');
     }
     public function pasien()
     {
