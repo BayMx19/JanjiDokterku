@@ -2,7 +2,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 
-const user = usePage().props.auth.user;
+const page = usePage();
+const user = page.props.auth.user;
 </script>
 
 <template>
@@ -18,23 +19,22 @@ const user = usePage().props.auth.user;
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <!-- Kartu Statistik -->
+                    <div class="bg-white shadow-md rounded-lg p-4">
+                        <p class="text-gray-500 text-sm">Total Users</p>
+                        <h3 class="text-2xl font-bold text-gray-800">
+                            {{ page.props.totalUsers }}
+                        </h3>
+                    </div>
                     <div class="bg-white shadow-md rounded-lg p-4">
                         <p class="text-gray-500 text-sm">Total Pasien</p>
                         <h3 class="text-2xl font-bold text-gray-800">
-                            {{ $page.props.totalPasien }}
+                            {{ page.props.totalPasien }}
                         </h3>
                     </div>
                     <div class="bg-white shadow-md rounded-lg p-4">
                         <p class="text-gray-500 text-sm">Total Dokter</p>
                         <h3 class="text-2xl font-bold text-gray-800">
-                            {{ $page.props.totalDokter }}
-                        </h3>
-                    </div>
-                    <div class="bg-white shadow-md rounded-lg p-4">
-                        <p class="text-gray-500 text-sm">Total Jadwal</p>
-                        <h3 class="text-2xl font-bold text-gray-800">
-                            {{ $page.props.totalJadwal }}
+                            {{ page.props.totalDokter }}
                         </h3>
                     </div>
                 </div>
@@ -59,7 +59,6 @@ const user = usePage().props.auth.user;
                     </div>
                 </div>
 
-                <!-- Audit Trail Terbaru -->
                 <div class="bg-white p-6 shadow-md sm:rounded-lg">
                     <h3 class="mb-2 font-bold text-lg">Audit Trail Terbaru</h3>
                     <table
@@ -80,7 +79,7 @@ const user = usePage().props.auth.user;
                         </thead>
                         <tbody>
                             <tr
-                                v-for="audit in $page.props.audits"
+                                v-for="audit in page.props.audits"
                                 :key="audit.id"
                             >
                                 <td class="border border-gray-300 px-2 py-1">

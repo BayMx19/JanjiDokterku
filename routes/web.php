@@ -59,21 +59,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/dokter/{id}', [DokterController::class, 'update'])->name('dokter.update');
     Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
 
-Route::get('/roles', [RolesController::class, 'index'])->name('roles');
-Route::get('/master/roles/create', [RolesController::class, 'create'])->name('roles.create');
-Route::post('/master/roles', [RolesController::class, 'store'])->name('roles.store');
-Route::get('/roles/{id}/edit', [RolesController::class, 'edit'])->name('roles.edit');
-Route::put('/roles/{id}', [RolesController::class, 'update'])->name('roles.update');
-Route::delete('/roles/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');    });
+    Route::get('/roles', [RolesController::class, 'index'])->name('roles');
+    Route::get('/master/roles/create', [RolesController::class, 'create'])->name('roles.create');
+    Route::post('/master/roles', [RolesController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{id}/edit', [RolesController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{id}', [RolesController::class, 'update'])->name('roles.update');
+    Route::delete('/roles/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');    });
 
-Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments');
 
-Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
-Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
-Route::get('/appointments/{id}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
-Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
-Route::get('/appointments/{id}/detail', [AppointmentController::class, 'detail'])->name('appointments.detail');
-Route::post('/appointments/{id}/rekam-medis', [AppointmentController::class, 'storeRekamMedis'])->name('appointments.storeRekamMedis');
-Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');});
+    Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments');
+    Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+    Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::get('/appointments/{id}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::get('/appointments/{id}/detail', [AppointmentController::class, 'detail'])->name('appointments.detail');
+    Route::post('/appointments/{id}/rekam-medis', [AppointmentController::class, 'storeRekamMedis'])->name('appointments.storeRekamMedis');
+    Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');});
 
 require __DIR__.'/auth.php';

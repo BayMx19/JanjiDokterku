@@ -12,14 +12,22 @@
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <!-- Tombol di kanan -->
-                        <div class="mb-4 flex justify-end">
+                        <div class="mb-4 flex justify-between items-center">
                             <Link
                                 :href="route('pasien.create')"
                                 class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                             >
                                 <i class="fas fa-plus mr-2"></i>Tambah Pasien
                             </Link>
+
+                            <div class="flex space-x-4">
+                                <input
+                                    v-model="search"
+                                    type="text"
+                                    placeholder="Cari nama atau NIK..."
+                                    class="rounded border px-3 py-1"
+                                />
+                            </div>
                         </div>
 
                         <div class="overflow-x-auto">
@@ -29,24 +37,31 @@
                                 <thead class="bg-gray-100">
                                     <tr>
                                         <th
-                                            class="border border-gray-300 px-4 py-2 text-left"
+                                            class="border border-gray-300 px-4 py-2 text-left cursor-pointer"
+                                            @click="setSort('name')"
                                         >
                                             Nama
+                                            <span v-if="sortKey === 'name'">{{
+                                                sortOrder === "asc" ? "▲" : "▼"
+                                            }}</span>
                                         </th>
                                         <th
-                                            class="border border-gray-300 px-4 py-2 text-left"
+                                            class="border border-gray-300 px-4 py-2 text-left cursor-pointer"
+                                            @click="setSort('nik')"
                                         >
-                                            Jenis Kelamin
+                                            NIK
+                                            <span v-if="sortKey === 'nik'">{{
+                                                sortOrder === "asc" ? "▲" : "▼"
+                                            }}</span>
                                         </th>
                                         <th
-                                            class="border border-gray-300 px-4 py-2 text-left"
-                                        >
-                                            Tanggal Lahir
-                                        </th>
-                                        <th
-                                            class="border border-gray-300 px-4 py-2 text-left"
+                                            class="border border-gray-300 px-4 py-2 text-left cursor-pointer"
+                                            @click="setSort('alamat')"
                                         >
                                             Alamat
+                                            <span v-if="sortKey === 'alamat'">{{
+                                                sortOrder === "asc" ? "▲" : "▼"
+                                            }}</span>
                                         </th>
                                         <th
                                             class="border border-gray-300 px-4 py-2 text-left"
@@ -57,33 +72,24 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        v-for="pasien in props.pasien.data"
-                                        :key="pasien.id"
+                                        v-for="p in filteredSortedPasien"
+                                        :key="p.id"
                                         class="even:bg-gray-50"
                                     >
                                         <td
                                             class="border border-gray-300 px-4 py-2"
                                         >
-                                            {{ pasien.user?.name ?? "-" }}
+                                            {{ p.user?.name ?? "-" }}
                                         </td>
                                         <td
                                             class="border border-gray-300 px-4 py-2"
                                         >
-                                            {{ pasien.jenis_kelamin }}
+                                            {{ p.NIK }}
                                         </td>
                                         <td
                                             class="border border-gray-300 px-4 py-2"
                                         >
-                                            {{
-                                                formatTanggal(
-                                                    pasien.tanggal_lahir
-                                                )
-                                            }}
-                                        </td>
-                                        <td
-                                            class="border border-gray-300 px-4 py-2"
-                                        >
-                                            {{ pasien.alamat?.jalan ?? "-" }}
+                                            {{ p.alamat?.jalan ?? "-" }}
                                         </td>
                                         <td
                                             class="border border-gray-300 px-4 py-2"
@@ -95,7 +101,7 @@
                                                     :href="
                                                         route(
                                                             'pasien.edit',
-                                                            pasien.id
+                                                            p.id
                                                         )
                                                     "
                                                     class="text-blue-600 hover:text-blue-800"
@@ -104,14 +110,22 @@
                                                     <i class="fas fa-edit"></i>
                                                 </Link>
                                                 <button
-                                                    @click="
-                                                        destroyPasien(pasien.id)
-                                                    "
+                                                    @click="destroyPasien(p.id)"
                                                     class="text-red-600 hover:text-red-800"
                                                 >
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-if="filteredSortedPasien.length === 0"
+                                    >
+                                        <td
+                                            colspan="4"
+                                            class="text-center py-4 text-gray-500"
+                                        >
+                                            Tidak ada data.
                                         </td>
                                     </tr>
                                 </tbody>
@@ -147,13 +161,18 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link, router } from "@inertiajs/vue3";
+import { ref, computed } from "vue";
 
 const props = defineProps({
     pasien: Object,
 });
 
+const search = ref("");
+const sortKey = ref("name");
+const sortOrder = ref("asc");
+
 function destroyPasien(id) {
-    if (confirm("Yakin ingin menghapus data pasien ini?")) {
+    if (confirm("Yakin ingin menghapus pasien ini?")) {
         router.delete(route("pasien.destroy", id), {
             preserveScroll: true,
             onSuccess: () => {
@@ -166,11 +185,43 @@ function destroyPasien(id) {
     }
 }
 
-function formatTanggal(tgl) {
-    const date = new Date(tgl);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+function toggleSortOrder() {
+    sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
 }
+
+function setSort(key) {
+    if (sortKey.value === key) {
+        toggleSortOrder();
+    } else {
+        sortKey.value = key;
+        sortOrder.value = "asc";
+    }
+}
+
+const filteredSortedPasien = computed(() => {
+    let data = props.pasien.data;
+
+    if (search.value.trim() !== "") {
+        const lower = search.value.toLowerCase();
+        data = data.filter((p) => p.user?.name?.toLowerCase().includes(lower));
+    }
+
+    data = data.slice().sort((a, b) => {
+        let aVal, bVal;
+
+        if (sortKey.value === "name") {
+            aVal = a.user?.name?.toLowerCase() || "";
+            bVal = b.user?.name?.toLowerCase() || "";
+        } else {
+            aVal = a[sortKey.value]?.toLowerCase() || "";
+            bVal = b[sortKey.value]?.toLowerCase() || "";
+        }
+
+        if (aVal < bVal) return sortOrder.value === "asc" ? -1 : 1;
+        if (aVal > bVal) return sortOrder.value === "asc" ? 1 : -1;
+        return 0;
+    });
+
+    return data;
+});
 </script>

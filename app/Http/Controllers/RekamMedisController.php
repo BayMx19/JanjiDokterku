@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RekamMedisModel;
 use App\Models\User;
+use ExportRekamMedisJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ class RekamMedisController extends Controller
             'RM' => $rekamMedis,
         ]);
     }
+
     public function create()
     {
         $users = User::whereHas('role', function ($query) {
@@ -102,6 +104,16 @@ class RekamMedisController extends Controller
 
         $rm->delete();
         return redirect()->back()->with('success', 'Data rekam medis berhasil dihapus.');
+    }
+
+    public function export(Request $request)
+    {
+        // Default fields / bisa dari request jika nanti dibuat pilihan
+        $fields = ['user.name', 'tanggal', 'diagnosa', 'tindakan'];
+
+        ExportRekamMedisJob::dispatch($fields);
+
+        return back()->with('message', 'Export sedang diproses di background...');
     }
 
 }

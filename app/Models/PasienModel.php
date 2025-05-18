@@ -23,7 +23,8 @@ class PasienModel extends Model implements AuditableContract
         'alamat',
         'user_id',
         'NIK',
-        'jenis_kelamin'
+        'jenis_kelamin',
+        'ktp'
     ];
 
     protected $casts = [

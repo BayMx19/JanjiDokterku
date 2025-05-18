@@ -24,9 +24,13 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
+        <div class="mb-6 text-center">
+            <h1 class="text-3xl font-bold text-red-600">Register</h1>
+        </div>
+
+        <form @submit.prevent="submit" class="max-w-md mx-auto">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Name" class="text-red-600" />
 
                 <TextInput
                     id="name"
@@ -42,7 +46,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" class="text-red-600" />
 
                 <TextInput
                     id="email"
@@ -57,7 +61,11 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel
+                    for="password"
+                    value="Password"
+                    class="text-red-600"
+                />
 
                 <TextInput
                     id="password"
@@ -75,6 +83,7 @@ const submit = () => {
                 <InputLabel
                     for="password_confirmation"
                     value="Confirm Password"
+                    class="text-red-600"
                 />
 
                 <TextInput
@@ -92,10 +101,10 @@ const submit = () => {
                 />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="mt-4 flex items-center justify-end max-w-md mx-auto">
                 <Link
                     :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="rounded-md text-sm text-red-600 underline hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                     Sudah Punya Akun?
                 </Link>

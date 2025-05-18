@@ -55,7 +55,24 @@
                                 {{ form.errors.NIK }}
                             </div>
                         </div>
-
+                        <div class="mb-4">
+                            <label
+                                class="block text-sm font-medium text-gray-700"
+                                >Upload KTP</label
+                            >
+                            <input
+                                type="file"
+                                @change="(e) => (form.ktp = e.target.files[0])"
+                                class="mt-1 w-full rounded border-gray-300 shadow-sm"
+                                accept=".jpg,.jpeg,.png,.pdf"
+                            />
+                            <div
+                                v-if="form.errors.ktp"
+                                class="text-sm text-red-600"
+                            >
+                                {{ form.errors.ktp }}
+                            </div>
+                        </div>
                         <div class="mb-4">
                             <label
                                 class="block text-sm font-medium text-gray-700"
@@ -261,6 +278,7 @@ const form = useForm({
         kode_pos: "",
     },
     no_hp: "",
+    ktp: null,
 });
 const props = defineProps({
     users: Array,

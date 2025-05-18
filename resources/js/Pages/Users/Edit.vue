@@ -94,8 +94,6 @@
         <div class="py-12">
             <div class="bg-white p-6 shadow-md sm:rounded-lg mt-3">
                 <div>
-                    <!-- Form Edit User disini -->
-
                     <h3 class="mb-2"><b>Audit Trail</b></h3>
                     <table
                         class="table-auto border-collapse border border-gray-300 w-full"
@@ -108,9 +106,6 @@
                                 <th class="border border-gray-300 px-2 py-1">
                                     Aksi
                                 </th>
-                                <!-- <th class="border border-gray-300 px-2 py-1">
-                                    Detail Perubahan
-                                </th> -->
                                 <th class="border border-gray-300 px-2 py-1">
                                     Oleh User
                                 </th>
@@ -128,29 +123,6 @@
                                 <td class="border border-gray-300 px-2 py-1">
                                     {{ audit.event }}
                                 </td>
-                                <!-- <td
-                                    class="border border-gray-300 px-2 py-1 whitespace-normal"
-                                >
-                                    <div
-                                        v-for="(
-                                            newValue, key
-                                        ) in audit.new_values"
-                                        :key="key"
-                                        class="mb-1"
-                                    >
-                                        <strong>{{ key }}:</strong><br />
-                                        <span
-                                            class="line-through text-red-600"
-                                            >{{
-                                                audit.old_values[key] ?? "-"
-                                            }}</span
-                                        >
-                                        <br />
-                                        <span class="text-green-600">{{
-                                            newValue
-                                        }}</span>
-                                    </div>
-                                </td> -->
                                 <td class="border border-gray-300 px-2 py-1">
                                     {{ audit.user?.name ?? "System" }}
                                 </td>

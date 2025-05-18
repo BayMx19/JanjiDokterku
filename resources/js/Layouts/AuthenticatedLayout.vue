@@ -7,6 +7,7 @@ import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
 import Swal from "sweetalert2";
+
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -19,10 +20,12 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex h-16 justify-between">
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="flex shrink-0 items-center text-bold">
-                                <Link :href="route('dashboard')">
-                                    JanjiDokterku
-                                </Link>
+                            <div
+                                class="flex shrink-0 items-center font-bold text-red-600"
+                            >
+                                <Link :href="route('dashboard')"
+                                    >JanjiDokterku</Link
+                                >
                             </div>
 
                             <!-- Navigation Links -->
@@ -32,9 +35,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
+                                    >Dashboard</NavLink
                                 >
-                                    Dashboard
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -42,9 +44,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('users')"
                                     :active="route().current('users')"
+                                    >Master Users</NavLink
                                 >
-                                    Master Users
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -52,9 +53,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('pasien')"
                                     :active="route().current('pasien')"
+                                    >Master Pasien</NavLink
                                 >
-                                    Master Pasien
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -62,9 +62,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('dokter')"
                                     :active="route().current('dokter')"
+                                    >Master Dokter</NavLink
                                 >
-                                    Master Dokter
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -72,9 +71,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('rm')"
                                     :active="route().current('rm')"
+                                    >Rekam Medis</NavLink
                                 >
-                                    Rekam Medis
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -82,9 +80,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('roles')"
                                     :active="route().current('roles')"
+                                    >Master Roles</NavLink
                                 >
-                                    Master Roles
-                                </NavLink>
                             </div>
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
@@ -92,9 +89,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink
                                     :href="route('appointments')"
                                     :active="route().current('appointments')"
+                                    >Appointment</NavLink
                                 >
-                                    Appoinment
-                                </NavLink>
                             </div>
                         </div>
 
@@ -131,9 +127,8 @@ const showingNavigationDropdown = ref(false);
                                             :href="route('logout')"
                                             method="post"
                                             as="button"
+                                            >Log Out</DropdownLink
                                         >
-                                            Log Out
-                                        </DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -194,9 +189,8 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
+                            >Dashboard</ResponsiveNavLink
                         >
-                            Dashboard
-                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -215,9 +209,8 @@ const showingNavigationDropdown = ref(false);
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
+                                >Log Out</ResponsiveNavLink
                             >
-                                Log Out
-                            </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>

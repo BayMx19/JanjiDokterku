@@ -49,14 +49,12 @@ class PasienController extends Controller
             'alamat.provinsi'   => 'nullable|string|max:255',
             'alamat.kode_pos'   => 'nullable|string|max:10',
             'user_id'       => 'required|exists:users,id',
+             'ktp'           => 'nullable|file|mimes:pdf|max:500', // max 2MB
         ]);
-        // $alamat = $validated['alamat'] ?? null;
-        // if (is_array($alamat)) {
-        //     $alamat = json_encode($alamat);
-        // }
-        // elseif (is_string($alamat) && trim($alamat) === '') {
-        // $alamat = null;
-        // }
+        $ktpPath = null;
+            if ($request->hasFile('ktp')) {
+                $ktpPath = $request->file('ktp')->store('ktp', 'public');
+            }
         PasienModel::create([
             'id'            => Str::uuid()->toString(),
             'NIK'           => $validated['NIK'],
@@ -64,6 +62,7 @@ class PasienController extends Controller
             'jenis_kelamin' => $validated['jenis_kelamin'],
             'alamat'        => $validated['alamat'],
             'user_id'       => $validated['user_id'],
+            'ktp'           => $ktpPath,
         ]);
 
         return redirect()->route('pasien')->with('success', 'Pasien berhasil ditambahkan.');
